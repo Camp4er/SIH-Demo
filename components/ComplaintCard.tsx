@@ -5,7 +5,10 @@ import Link from "next/link";
 
 export default function ComplaintCard({ c }: { c: Complaint }) {
   return (
-    <div className="bg-white rounded shadow p-4">
+    <Link
+      href={`/citizen/complaints/${c.id}`}
+      className="block bg-white rounded shadow p-4"
+    >
       <div className="flex items-start gap-4">
         <div className="w-24 h-24 bg-gray-100 flex items-center justify-center overflow-hidden">
           {c.photo ? (
@@ -21,23 +24,22 @@ export default function ComplaintCard({ c }: { c: Complaint }) {
         <div className="flex-1">
           <h3 className="font-semibold">{c.title}</h3>
           <div className="text-sm text-gray-600">{c.description}</div>
-          <div className="text-xs mt-2">
-            Category: {c.category} • Status:{" "}
-            <span className="font-medium">{c.status}</span>
+          <div className="flex items-center gap-2 mt-2 text-xs">
+            <span
+              className={`px-2 py-1 rounded text-white ${
+                c.status === "Pending"
+                  ? "bg-gray-400"
+                  : c.status === "In Progress"
+                  ? "bg-yellow-500"
+                  : "bg-green-600"
+              }`}
+            >
+              {c.status}
+            </span>
+            <span className="text-gray-400">📍 Location detected</span>
           </div>
-        </div>
-        <div className="text-right">
-          <div className="text-xs text-gray-500">
-            {new Date(c.createdAt).toLocaleString()}
-          </div>
-          <Link
-            href={`/citizen/complaints#${c.id}`}
-            className="mt-2 inline-block text-sm text-blue-600"
-          >
-            View
-          </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
